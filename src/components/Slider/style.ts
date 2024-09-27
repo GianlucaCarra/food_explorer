@@ -164,6 +164,9 @@ export const SlideCard = styled.div`
     width: 176px;
     height: 176px;
 
+    object-fit: cover;
+    object-position: center;
+
     border-radius: 50%;
   }
 
