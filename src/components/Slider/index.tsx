@@ -21,7 +21,6 @@ function Slider({ title, data }: ISliderProps) {
   const { role } = useAuth();
   const sliderRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  console.log(data)
 
   const handleMouseEnter = (index: number) => {
     setHoveredStates([hoveredStates.push(index)]);
