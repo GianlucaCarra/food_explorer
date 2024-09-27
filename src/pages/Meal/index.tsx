@@ -73,7 +73,7 @@ function Meal() {
         </Back>
 
         <Info>
-          <img src={data.imageUrl} alt="Meal photo" />
+          <img src={data.imageURL} alt="Meal photo" />
 
           <div className="meal-infos">
             <div className="text">

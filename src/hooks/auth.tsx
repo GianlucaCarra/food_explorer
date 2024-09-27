@@ -23,7 +23,7 @@ export interface IMeal {
   price: number;
   type: string; 
   ingredients: any[];
-  imageUrl?: string;
+  imageURL?: string;
   img?: File
 }
 

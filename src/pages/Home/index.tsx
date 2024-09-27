@@ -45,6 +45,8 @@ function Home() {
       }
     }
 
+    console.log(meals )
+
     fetchData();
   }, []);
 

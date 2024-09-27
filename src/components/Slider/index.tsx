@@ -21,12 +21,13 @@ function Slider({ title, data }: ISliderProps) {
   const { role } = useAuth();
   const sliderRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  console.log(data)
 
   const handleMouseEnter = (index: number) => {
     setHoveredStates([hoveredStates.push(index)]);
   };
 
-  const handleMouseLeave = (index: number) => {
+  const handleMouseLeave = () => {
     setHoveredStates([]);
   };
 
@@ -58,7 +59,7 @@ function Slider({ title, data }: ISliderProps) {
 
         <SliderSec ref={sliderRef}>
           {
-            data.map(({ id, imageUrl, name, desc, price }, index) => {
+            data.map(({ id, imageURL, name, desc, price }, index) => {
               const isHovered = hoveredStates[index];
 
               return(
@@ -70,7 +71,7 @@ function Slider({ title, data }: ISliderProps) {
                       src={pencil} 
                       alt="Wishlist fill" 
                       onClick={() => navigate(`/update-meal/${id}`)}
-                      onMouseLeave={() => handleMouseLeave(index)}
+                      onMouseLeave={() => handleMouseLeave()}
                     /> :
 
                     isHovered ? 
@@ -78,7 +79,7 @@ function Slider({ title, data }: ISliderProps) {
                       className="favFill" 
                       src={heartFill} 
                       alt="Wishlist fill" 
-                      onMouseLeave={() => handleMouseLeave(index)}
+                      onMouseLeave={() => handleMouseLeave()}
                     /> :
 
                     <img 
@@ -92,7 +93,7 @@ function Slider({ title, data }: ISliderProps) {
                   <div className="meal-info">
                     <img 
                       className="meal" 
-                      src={imageUrl}
+                      src={imageURL}
                       alt={`${name} image`} 
                     />
 
