@@ -1,8 +1,10 @@
 import axios from "axios";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+const env = import.meta.env.VITE_ENV;
 const api = axios.create({
-  baseURL: "https://api.vististudi.online",
-  withCredentials: true
+  baseURL: apiUrl,
+  withCredentials: env === "development" ? false : true
 });
 
 export default api;

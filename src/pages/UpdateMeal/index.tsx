@@ -1,30 +1,26 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
-import { useAuth } from "../../hooks/auth";
-import { api } from "../../services/api";
-
+import { Ingredient, useAuth } from "../../hooks/auth";
 import { Container, Content, Back, Section, Select, List } from "./style"
-
-import { Header } from "../../components/Header";
-import { Footer } from "../../components/Footer";
-import { Input } from "../../components/Input";
-import { Button } from "../../components/Button";
-import { IngredientItem } from "../../components/IngredientItem";
-import { Loader } from "../../components/Loader";
-import { SideMenu } from "../../components/SideMenu";
-
+import api from "../../services/api";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import IngredientItem from "../../components/IngredientItem";
+import Loader from "../../components/Loader";
+import SideMenu from "../../components/SideMenu";
 import caretLeft from "../../assets/CaretLeft.svg";
 import upload from "../../assets/Upload.svg";
 
-export function UpdateMeal() {
+function UpdateMeal() {
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [desc, setDesc] = useState('');
   const [price, setPrice] = useState(0);
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState<string[]>([]);
   const [newIngredient, setNewIngredient] = useState("");
-  const [img, setImg] = useState(null);
+  const [img, setImg] = useState<File>();
   const [isModified, setIsModified] = useState(false);
   const [loadig, setLoading] = useState(true);
   const [loadingPatch, setLoadingPatch] = useState(false);
@@ -50,7 +46,7 @@ export function UpdateMeal() {
       setDesc(response.data.desc);
       setPrice(response.data.price);
 
-      const ingredientNames = response.data.ingredients.map(ingredient => ingredient.name);
+      const ingredientNames = response.data.ingredients.map((ingredient: Ingredient) => ingredient.name);
       setIngredients(ingredientNames);
     }
     
@@ -60,7 +56,7 @@ export function UpdateMeal() {
     });
   }, []);
   
-  function handleAddIngredient(e) {
+  function handleAddIngredient(e: any) {
     e.preventDefault();
 
     if(newIngredient === "") {
@@ -76,7 +72,7 @@ export function UpdateMeal() {
     setNewIngredient("");
   }
 
-  function handleRemoveIngredient(event, deleted) {
+  function handleRemoveIngredient(event: any, deleted: any) {
     event.preventDefault();
 
     const deletedList = () => ingredients.filter(ingredient => ingredient != deleted);
@@ -99,14 +95,14 @@ export function UpdateMeal() {
       await api.delete(`/meals/delete/${id}`, {
         withCredentials: true
       });
-    } catch(error) {
+    } catch(error: any) {
       alert(error.response.data.message);
     } finally {
       navigate(-1);
     }
   }
   
-  const handleImg = (e) => {
+  const handleImg = (e: any) => {
     const file = e.target.files[0];
     
     setImg(file);
@@ -211,14 +207,15 @@ export function UpdateMeal() {
                 {
                   ingredients.map((ingredient, index) => (
                     <IngredientItem 
-                    key={index}
-                    value={ingredient}
-                    onClick={() => handleRemoveIngredient(event, ingredient)}
+                      key={index}
+                      value={ingredient}
+                      onClick={() => handleRemoveIngredient(event, ingredient)} 
+                      $isnew={false}                    
                     />
                   ))
                 }
                 <IngredientItem 
-                  $isnew="true"
+                  $isnew={true}
                   placeholder="New Item"
                   value={newIngredient}
                   onChange={e => setNewIngredient(e.target.value)}
@@ -233,7 +230,7 @@ export function UpdateMeal() {
                 type="number"
                 id="price"
                 step="0.01" 
-                value={price}
+                value={String(price)}
                 placeholder="$ 00.00"
                 onChange={e => { 
                   setPrice(e.target.value); 
@@ -284,3 +281,5 @@ export function UpdateMeal() {
     </Container>
   );
 }
+
+export default UpdateMeal;

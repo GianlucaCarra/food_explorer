@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
-import { api } from "../../services/api";
-
 import { Container, Content, Banner } from "./style"
-
-import { Header } from "../../components/Header";
-import { Footer } from "../../components/Footer";
-import { Slider } from "../../components/Slider";
-import { Loader } from "../../components/Loader";
-import { SideMenu } from "../../components/SideMenu";
-
+import { IMeal } from "../../hooks/auth";
+import api from "../../services/api";
+import Header from "../../components/Header";
+import  Footer from "../../components/Footer";
+import  Slider from "../../components/Slider";
+import  Loader from "../../components/Loader";
+import  SideMenu from "../../components/SideMenu";
 import foodsBanner from "../../assets/FoodsBanner.png";
 
-export function Home() {
+function Home() {
   const [meals, setMeals] = useState([]);
   const [desserts, setDesserts] = useState([]);
   const [drinks, setDrinks] = useState([]);
@@ -27,14 +25,14 @@ export function Home() {
           withCredentials: true
         });
         
-        const filteredMeals = index.data.filter(item => item.type === "meal");
-        const filteredDesserts = index.data.filter(item => item.type === "dessert");
-        const filteredDrinks = index.data.filter(item => item.type === "drink");
+        const filteredMeals = index.data.filter((item: IMeal) => item.type === "meal");
+        const filteredDesserts = index.data.filter((item: IMeal) => item.type === "dessert");
+        const filteredDrinks = index.data.filter((item: IMeal) => item.type === "drink");
 
         setMeals(filteredMeals);
         setDesserts(filteredDesserts);
         setDrinks(filteredDrinks);
-      } catch (error) {
+      } catch (error: any) {
         if (error.response) {
           alert(error.response.data.message);
         } else {
@@ -91,3 +89,5 @@ export function Home() {
     </Container>
   );
 }
+
+export default Home;

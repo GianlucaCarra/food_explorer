@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { DEVICE_BREAKPOINTS } from "../../style/deviceBreakpoints";
+import DEVICE_BREAKPOINTS from "../../style/deviceBreakpoints";
 
 export const Container = styled.main`
   width: 100vw;

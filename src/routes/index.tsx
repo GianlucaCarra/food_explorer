@@ -5,11 +5,8 @@ import AuthRoutes from "./auth.routes";
 import AdminRoutes from "./admin.routes";
 import UserRoutes from "./user.routes";
 
-interface IAuth {
-}
-
 function Routes() {
-  const { role, user }: IAuth = useAuth();
+  const { role, user } = useAuth();
   const AcessRoute = () => {
     switch(role) {
       case USER_ROLE.ADMIN:
@@ -23,7 +20,7 @@ function Routes() {
 
   return(
     <BrowserRouter> 
-      { !user ? <AuthRoutes /> : <AcessRoute /> }
+      { !user && !role ? <AuthRoutes /> : <AcessRoute /> }
     </BrowserRouter>
   );
 }

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { DEVICE_BREAKPOINTS } from "../../style/deviceBreakpoints";
+import DEVICE_BREAKPOINTS from "../../style/deviceBreakpoints";
 
 export const Header = styled.div`
   @media (max-width: ${DEVICE_BREAKPOINTS.SM}) {

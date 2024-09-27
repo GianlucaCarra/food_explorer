@@ -1,19 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { Container } from "./style"; 
 
-interface IResultItemProps {
-  img: string;
+export interface IResultItemProps {
+  imageUrl: string;
   name: string;
   desc: string;
   id: string;
 }
 
-export default function ResultItem({ img, name, desc, id }: IResultItemProps) {
+function ResultItem({ imageUrl, name, desc, id }: IResultItemProps) {
   const navigate = useNavigate();
 
   return(
     <Container onClick={() => navigate(`/meal/${id}`)}>
-      <img src={img} alt={`image of ${name}`} />
+      <img src={imageUrl} alt={`image of ${name}`} />
 
       <div className="text">
         <h1 className="poppins-300-bold">{name + " >"}</h1>
@@ -23,3 +23,5 @@ export default function ResultItem({ img, name, desc, id }: IResultItemProps) {
     </Container>
   );
 }
+
+export default ResultItem;

@@ -1,25 +1,29 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../hooks/auth";
-
+import { ILogin, useAuth } from "../../hooks/auth";
 import { Container, Logo, Form, ButtonText } from "./style";
-
-import { Input } from "../../components/Input";
-import { Button } from "../../components/Button"; 
-
+import Input from "../../components/Input";
+import Button from "../../components/Button"; 
 import logo from "../../assets/Logo.svg";
 
-export function SignUp() {
+function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
   const { signUp } = useAuth();
 
   const validateForm = () => {
-    setIsFormValid(email && password && email.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/) && password.length >= 6);
+    setIsFormValid(
+      email && 
+      password && 
+      email.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/) && 
+      password.length >= 6 ? true : false
+    );
   };
 
   const handleLogin = () => {
-    signUp({ email, password });
+    const loginInfo: ILogin = { email, password }
+
+    signUp(loginInfo);
   }
 
   useEffect(() => {
@@ -51,7 +55,7 @@ export function SignUp() {
           label="Password"
           type="password"
           placeholder="At least 6 characters"
-          minLength="6"
+          minLength={6}
           onChange={e => setPassword(e.target.value)}
         />
 
@@ -64,3 +68,5 @@ export function SignUp() {
     </Container>
   );
 }
+
+export default SignUp;

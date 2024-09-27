@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/auth";
 import debounce from "lodash.debounce";
 import api from "../../services/api";
 import USER_ROLE from "../../utils/roles";
-import ResultItem from "../ResultItem";
+import ResultItem, { IResultItemProps } from "../ResultItem";
 import Button from "../Button";
 import logo from "../../assets/Logo.svg";
 import search from "../../assets/Search.svg";
@@ -17,7 +17,7 @@ interface IHeaderProps {
   onOpenMenu: () => void;
 }
 
-export function Header({ onOpenMenu }: IHeaderProps) {
+function Header({ onOpenMenu }: IHeaderProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const { signOut, role } = useAuth();
@@ -94,9 +94,9 @@ export function Header({ onOpenMenu }: IHeaderProps) {
 
           <Results>
             {
-              searchResults.map(({ imageUrl, name, desc, id }) => {
+              searchResults.map(({ imageUrl, name, desc, id }: IResultItemProps) => {
                 return(
-                  <ResultItem key={id} img={imageUrl} name={name} desc={desc} id={id}/>
+                  <ResultItem key={id} imageUrl={imageUrl} name={name} desc={desc} id={id}/>
                 );
               })
             }
@@ -128,3 +128,5 @@ export function Header({ onOpenMenu }: IHeaderProps) {
     </Container>
   );
 }
+
+export default Header;

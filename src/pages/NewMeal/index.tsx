@@ -1,39 +1,42 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/auth";
-
 import { Container, Content, Back, Section, Select, List } from "./style"
-
-import { Header } from "../../components/Header";
-import { Footer } from "../../components/Footer";
-import { Input } from "../../components/Input";
-import { Button } from "../../components/Button";
-import { IngredientItem } from "../../components/IngredientItem";
-import { SideMenu } from "../../components/SideMenu";
-
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import IngredientItem from "../../components/IngredientItem";
+import SideMenu from "../../components/SideMenu";
 import caretLeft from "../../assets/CaretLeft.svg";
 import upload from "../../assets/Upload.svg";
 
-export function NewMeal() {
+function NewMeal() {
   const [name, setName] = useState('');
   const [type, setType] = useState('meal');
   const [desc, setDesc] = useState('');
   const [price, setPrice] = useState(0);
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState<string[]>([]);
   const [newIngredient, setNewIngredient] = useState("");
-  const [img, setImg] = useState(null);
+  const [img, setImg] = useState<File>();
   const [isFormValid, setIsFormValid] = useState(false);
   const [loadingCreate, setLoadingCreate] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-
   const navigate = useNavigate();
   const { newMeal } = useAuth();
-
   const validateForm = () => {
-    setIsFormValid(name && type && ingredients.length > 0 && desc && price && img && true);
+    setIsFormValid(
+      name && 
+      type && 
+      desc && 
+      price && 
+      img && 
+      ingredients.length > 0 && 
+      true ? true : false
+    );
   };
 
-  function handleAddIngredient(e) {
+  function handleAddIngredient(e: any) {
     e.preventDefault();
 
     if(newIngredient === "") {
@@ -48,7 +51,7 @@ export function NewMeal() {
     setNewIngredient("");
   }
 
-  function handleRemoveIngredient(event, deleted) {
+  function handleRemoveIngredient(event: any, deleted: any) {
     event.preventDefault();
 
     setIngredients(prevState => 
@@ -56,7 +59,7 @@ export function NewMeal() {
     );
   }  
 
-  const handleImg = (e) => {
+  const handleImg = (e: any) => {
     const file = e.target.files[0];
 
     setImg(file);
@@ -67,7 +70,7 @@ export function NewMeal() {
     try {
       await newMeal({ name, desc, price, type, ingredients, img });
       setLoadingCreate(false);
-    } catch(error) {
+    } catch(error: any) {
       alert(error.response.data.message);
     } finally {
       navigate(-1);
@@ -160,18 +163,19 @@ export function NewMeal() {
             <div className="ingredients">
               <span className="poppins-100-medium">Ingredients</span>
 
-              <List className={ingredients.length <= 0 ? "invalid" : null}>
+              <List className={ingredients.length <= 0 ? "invalid" : undefined}>
                 {
                   ingredients.map((ingredient, index) => (
                     <IngredientItem 
-                    key={String(index)}
-                    value={ingredient}
-                    onClick={() => handleRemoveIngredient(event, ingredient)}
+                      key={String(index)}
+                      value={ingredient}
+                      onClick={() => handleRemoveIngredient(event, ingredient)} 
+                      $isnew={false}
                     />
                   ))
                 }
                 <IngredientItem 
-                  $isnew="true"
+                  $isnew={true}
                   placeholder="New Item"
                   value={newIngredient}
                   onChange={e => setNewIngredient(e.target.value)}
@@ -182,12 +186,12 @@ export function NewMeal() {
 
             <div id="price">
               <Input 
-                label="Price" 
-                type="number" 
-                step="0.01" 
+                label="Price"
+                type="number"
+                step="0.01"
                 placeholder="$ 00.00"
                 onChange={(e => setPrice(e.target.value))}
-                required
+                required              
               />
             </div>
           </div>
@@ -217,7 +221,7 @@ export function NewMeal() {
                 text={loadingCreate ? "Loading..." : "Create meal"}
                 onClick={handleCreate}
                 disabled={!isFormValid}
-                className={loadingCreate && "loading"}
+                className={loadingCreate ? "loading" : undefined}
               />
             </div>
           </div>
@@ -228,3 +232,5 @@ export function NewMeal() {
     </Container>
   );
 }
+
+export default NewMeal;

@@ -1,31 +1,33 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/auth";
-import { USER_ROLE } from "../../utils/roles";
-
+import { IMeal, useAuth } from "../../hooks/auth";
 import { Container, SliderSec, SlideCard } from "./style"; 
-
-import { ButtonQuant } from "../ButtonQuant";
-import { Button } from "../Button";
-
+import USER_ROLE from "../../utils/roles";
+import ButtonQuant from "../ButtonQuant";
+import Button from "../Button";
 import heart from "../../assets/Heart.svg";
 import heartFill from "../../assets/HeartFill.svg";
 import pencil from "../../assets/Pencil.svg";
 import caretLeft from "../../assets/CaretLeft.svg";
 import caretRight from "../../assets/CaretRight.svg";
 
-export function Slider({ title, data }) {
-  const [hoveredStates, setHoveredStates] = useState({});
-  const sliderRef = useRef(null);
+interface ISliderProps {
+  title: string;
+  data: IMeal[];
+}
+
+function Slider({ title, data }: ISliderProps) {
+  const [hoveredStates, setHoveredStates] = useState<number[]>([]);
   const { role } = useAuth();
+  const sliderRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  const handleMouseEnter = index => {
-    setHoveredStates({ ...hoveredStates, [index]: true });
+  const handleMouseEnter = (index: number) => {
+    setHoveredStates([hoveredStates.push(index)]);
   };
 
-  const handleMouseLeave = index => {
-    setHoveredStates({ ...hoveredStates, [index]: false });
+  const handleMouseLeave = (index: number) => {
+    setHoveredStates([]);
   };
 
   const handlePreviousSlide = () => {
@@ -129,3 +131,5 @@ export function Slider({ title, data }) {
     </Container>
   );
 }
+
+export default Slider;

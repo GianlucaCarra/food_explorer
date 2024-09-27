@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+interface ContainerProps {
+  $isnew: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -15,7 +19,7 @@ export const Container = styled.div`
 
   > input {
     background-color: transparent;
-    color: ${({ theme, $isNew }) => $isNew ? theme.COLOR.LIGHT_500 : theme.COLOR.LIGHT_100};
+    color: ${({ theme, $isnew }) => $isnew ? theme.COLOR.LIGHT_500 : theme.COLOR.LIGHT_100};
     width: 60px;
   }
 

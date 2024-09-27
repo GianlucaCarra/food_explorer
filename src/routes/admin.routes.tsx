@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import { Home } from "../pages/Home";
-import { Meal } from "../pages/Meal";
-import { NewMeal } from "../pages/NewMeal";
-import { UpdateMeal } from "../pages/UpdateMeal";
+import Home from "../pages/Home";
+import Meal from "../pages/Meal";
+import NewMeal from "../pages/NewMeal";
+import UpdateMeal from "../pages/UpdateMeal";
 
 function AdminRoutes() {
   return(

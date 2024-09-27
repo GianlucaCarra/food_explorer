@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import { Home } from "../pages/Home";
-import { Meal } from "../pages/Meal";
+import Home from "../pages/Home";
+import Meal from "../pages/Meal";
 
 function UserRoutes() {
   return(

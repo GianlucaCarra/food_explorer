@@ -11,24 +11,30 @@ interface IUser {
   email: string;
 }
 
-interface IMeal {
+export interface Ingredient {
+  name: string;
   id: number;
+}
+
+export interface IMeal {
+  id?: string;
   name: string;
   desc: string;
   price: number;
   type: string; 
-  ingredients: Array<string>;
-  img: File
+  ingredients: any[];
+  imageUrl?: string;
+  img?: File
 }
 
-interface ILogin {
-  name: string;
+export interface ILogin {
+  name?: string;
   email: string;
   password: string;
 }
 
 interface IAuthContext {
-  user: IUser | object;
+  user: IUser | null;
   role: string;
   signIn: (loginData: ILogin) => Promise<void>;
   signUp: (loginData: ILogin) => Promise<void>;
@@ -40,7 +46,7 @@ interface IAuthContext {
 export const AuthContext = createContext<IAuthContext | undefined>(undefined);
 
 function AuthProvider({ children }: IChildren) {
-  const [data, setData] = useState<IUser | object>({});
+  const [data, setData] = useState<{ user: IUser | null }>({ user: null});
   const [role, setRole] = useState<string>("");
 
   async function signIn({ name, email, password }: ILogin) {
@@ -58,9 +64,7 @@ function AuthProvider({ children }: IChildren) {
 
   async function getRole() {
     try {
-      const response = await api.get("/sessions/role", { 
-        withCredentials: true 
-      });
+      const response = await api.get("/sessions/role");
 
       setRole(response.data.role);
     } catch (error) {
@@ -72,8 +76,6 @@ function AuthProvider({ children }: IChildren) {
       const response = await api.post("/sessions", { 
         email, 
         password 
-      }, {
-        withCredentials: true
       });
       
       const { user } = await response.data;
@@ -95,7 +97,7 @@ function AuthProvider({ children }: IChildren) {
       await api.delete("/sessions/logout");
    
       setRole("");
-      setData({});
+      setData({ user: null });
     } catch(error) {
     }
   }
@@ -110,13 +112,15 @@ function AuthProvider({ children }: IChildren) {
         type: type,
         ingredients: ingredients,
       }
-  
+      
+      if (!img) {
+        throw new Error();
+      }
+
       formData.append('data', JSON.stringify(jsonData));
       formData.append('img', img);
   
-      await api.post("/meals/create", formData, {
-        withCredentials: true
-      });
+      await api.post("/meals/create", formData);
     } catch (error) {
     }
   }
@@ -133,11 +137,12 @@ function AuthProvider({ children }: IChildren) {
       }
 
       formData.append('data', JSON.stringify(jsonData));
-      formData.append('img', img);
+      
+      if (img) {
+        formData.append('img', img);
+      }
 
-      await api.patch(`/meals/update/${id}`, formData, {
-        withCredentials: true
-      });
+      await api.patch(`/meals/update/${id}`, formData);
     } catch (error) {
     }
   }
@@ -148,14 +153,12 @@ function AuthProvider({ children }: IChildren) {
     if(user) {
       setData({ user: JSON.parse(user) });
       getRole();
-    } else {
-      signOut();
     }
   }, []);
 
   return (
     <AuthContext.Provider value={{ 
-      user: data, 
+      user: data.user, 
       role, 
       signUp, 
       signIn, 

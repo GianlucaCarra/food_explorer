@@ -1,9 +1,11 @@
 import { Container } from "./style"; 
 
-export function Loader() {
+function Loader() {
   return(
     <Container>
       <div className="loader"></div>
     </Container>
   );
 }
+
+export default Loader;

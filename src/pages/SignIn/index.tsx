@@ -1,15 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/auth";
-
 import { Container, Logo, Form, ButtonText } from "./style";
-
-import { Input } from "../../components/Input";
-import { Button } from "../../components/Button";
-
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 import logo from "../../assets/Logo.svg";
 
-export function SignIn() {
+function SignIn() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +21,7 @@ export function SignIn() {
       password && 
       name.match(/[a-zA-Z\s]+/) && 
       email.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/) && 
-      password.length >= 6
+      password.length >= 6 ? true : false
     );
   };
 
@@ -55,7 +52,7 @@ export function SignIn() {
           type="text"
           placeholder="Example: Gianluca Carra"
           pattern="[a-zA-Z\s]+"
-          onChange={e => setName(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
         />
 
         <Input 
@@ -64,7 +61,7 @@ export function SignIn() {
           type="text"
           placeholder="Example: gianluca@email.com"
           pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}"
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
         />
 
         <Input 
@@ -72,8 +69,8 @@ export function SignIn() {
           label="Password"
           type="password"
           placeholder="At least 6 characters"
-          minLength="6"
-          onChange={e => setPassword(e.target.value)}
+          minLength={6}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
         />
 
         <Button 
@@ -90,3 +87,5 @@ export function SignIn() {
     </Container>
   );
 }
+
+export default SignIn;

@@ -1,22 +1,23 @@
 import { useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
-import debounce from "lodash.debounce";
-
-import { api } from "../../services/api";
-import { USER_ROLE } from "../../utils/roles";
-
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { Container, Content, SearchBar, Results, Header, Actions } from "./style"; 
 import { useAuth } from "../../hooks/auth";
-import { ResultItem } from "../ResultItem";
-import { Footer } from "../Footer";
-
+import USER_ROLE from "../../utils/roles";
+import api from "../../services/api";
+import debounce from "lodash.debounce";
+import ResultItem, { IResultItemProps } from "../ResultItem/index";
+import Footer from "../Footer/index";
 import search from "../../assets/Search.svg";
-import { Close } from "../../assets/Close.jsx";
+import Close from "../../assets/Close";
 
-export function SideMenu({ menuIsOpen, onCloseMenu }) {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
-  const orders = 0;
+interface ISideMenuProps {
+  menuIsOpen: boolean;
+  onCloseMenu: () => void;
+}
+
+function SideMenu({ menuIsOpen, onCloseMenu }: ISideMenuProps) {
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<IResultItemProps[]>([]);
   const { signOut, role } = useAuth();
   const navigate = useNavigate();
 
@@ -46,7 +47,7 @@ export function SideMenu({ menuIsOpen, onCloseMenu }) {
     };
   }, [searchTerm, debouncedSearch]);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
   
@@ -78,9 +79,9 @@ export function SideMenu({ menuIsOpen, onCloseMenu }) {
 
           <Results>
             {
-              searchResults.map(({ imageUrl, name, desc, id }) => {
+              searchResults.map(({ imageUrl, name, desc, id }: IResultItemProps) => {
                 return(
-                  <ResultItem key={id} img={imageUrl} name={name} desc={desc} id={id}/>
+                  <ResultItem key={id} imageUrl={imageUrl} name={name} desc={desc} id={id}/>
                 );
               })
             }
@@ -113,3 +114,5 @@ export function SideMenu({ menuIsOpen, onCloseMenu }) {
     </Container>
   );
 }
+
+export default SideMenu;
