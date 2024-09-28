@@ -2,10 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { Container, Content, Logo, SearchBar, Results } from "./style"; 
 import { useAuth } from "../../hooks/auth";
+import { useOrder } from "../../hooks/OrderContext";
+import ResultItem, { IResultItemProps } from "../ResultItem";
 import debounce from "lodash.debounce";
 import api from "../../services/api";
 import USER_ROLE from "../../utils/roles";
-import ResultItem, { IResultItemProps } from "../ResultItem";
 import Button from "../Button";
 import logo from "../../assets/Logo.svg";
 import search from "../../assets/Search.svg";
@@ -13,15 +14,11 @@ import receipt from "../../assets/Receipt.svg";
 import signOutL from "../../assets/SignOut.svg";
 import Menu from "../../assets/Menu";
 
-interface IHeaderProps {
-  onOpenMenu: () => void;
-}
-
-function Header({ onOpenMenu }: IHeaderProps) {
+function Header({ onOpenMenu }: { onOpenMenu: () => void }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const { orders } = useOrder();
   const { signOut, role } = useAuth();
-  const orders = 0;
   const navigate = useNavigate();
 
   const debouncedSearch = useCallback(

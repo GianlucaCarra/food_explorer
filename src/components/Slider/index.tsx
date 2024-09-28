@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { IMeal, useAuth } from "../../hooks/auth";
 import { Container, SliderSec, SlideCard } from "./style"; 
+import { useOrder } from "../../hooks/OrderContext";
 import USER_ROLE from "../../utils/roles";
 import ButtonQuant from "../ButtonQuant";
 import Button from "../Button";
@@ -19,6 +20,7 @@ interface ISliderProps {
 function Slider({ title, data }: ISliderProps) {
   const [hoveredStates, setHoveredStates] = useState<number[]>([]);
   const { role } = useAuth();
+  const { addOrder } = useOrder();
   const sliderRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -118,7 +120,7 @@ function Slider({ title, data }: ISliderProps) {
                       <div className="buttons">
                         <ButtonQuant />
 
-                        <Button text="add" />
+                        <Button text="add" onClick={addOrder} />
                       </div>
                     }
                   </div>
